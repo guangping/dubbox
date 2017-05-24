@@ -292,7 +292,7 @@
 				<artifactId>cache-api</artifactId>
 				<version>${jcache_version}</version>
 			</dependency>
-			<dependency>
+<!--			<dependency>
 				<groupId>org.apache.tuscany.sca</groupId>
 				<artifactId>tuscany-sca-api</artifactId>
 				<version>${sca_version}</version>
@@ -301,7 +301,7 @@
 				<groupId>com.google.inject</groupId>
 				<artifactId>guice</artifactId>
 				<version>${guice_version}</version>
-			</dependency>
+			</dependency>-->
 			<dependency>
 				<groupId>com.alibaba.citrus</groupId>
 				<artifactId>citrus-webx-all</artifactId>
