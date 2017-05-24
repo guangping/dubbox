@@ -95,7 +95,7 @@ public class ExceptionFilter implements Filter {
                     }
 
                     // 扩展Dubbo本身的异常，直接抛出
-                    if(exception instanceof DubboxException){
+                    if(exception instanceof DubboException){
                         return result;
                     }
 
