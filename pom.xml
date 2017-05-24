@@ -124,6 +124,7 @@
 		<junit_version>4.10</junit_version>
 		<easymock_version>3.0</easymock_version>
 		<jmockit_version>0.999.8</jmockit_version>
+		<testng.version>6.11</testng.version>
 		<!-- Build args -->
 		<!--<argline>-server -Xms64m -Xmx64m -XX:PermSize=64m -XX:MaxPermSize=64m</argline> -->
 		<skip_maven_deploy>false</skip_maven_deploy>
@@ -354,6 +355,11 @@
 				<version>${log4j2_version}</version>
 			</dependency>
 			<!-- Test libs -->
+			<dependency>
+				<groupId>org.testng</groupId>
+				<artifactId>testng</artifactId>
+				<version>${testng.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>

@@ -57,10 +57,10 @@ public class LoggerFactory {
     		setLoggerAdapter(new JdkLoggerAdapter());
     	} else {
     		try {
-    			setLoggerAdapter(new Log4jLoggerAdapter());
+    			setLoggerAdapter(new Log4j2LoggerAdapter());
             } catch (Throwable e1) {
                 try {
-                	setLoggerAdapter(new Log4j2LoggerAdapter());
+                	setLoggerAdapter(new Slf4jLoggerAdapter());
                 } catch (Throwable e2) {
                     try {
                     	setLoggerAdapter(new JclLoggerAdapter());

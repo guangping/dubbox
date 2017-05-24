@@ -1,12 +1,12 @@
 /*
  * Copyright 1999-2011 Alibaba Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,15 +15,19 @@
  */
 package com.alibaba.dubbo.demo.consumer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.alibaba.dubbo.demo.bid.*;
 import com.alibaba.dubbo.demo.user.User;
 import com.alibaba.dubbo.demo.user.facade.AnotherUserRestService;
 import com.alibaba.dubbo.rpc.RpcContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DemoAction {
+
+    private static final Logger logger = LogManager.getLogger(DemoAction.class);
 
     private BidService bidService;
 
@@ -38,6 +42,8 @@ public class DemoAction {
     }
 
     public void start() throws Exception {
+        logger.info("logger start .......");
+
         BidRequest request = new BidRequest();
 
         Impression imp = new Impression();
@@ -62,14 +68,7 @@ public class DemoAction {
         device.setGeo(geo);
         request.setDevice(device);
 
-//        long start = System.currentTimeMillis();
-
-//        for (int i = 0; i < 10000; i ++) {
-//        System.out.println(bidService.bid(request).getId());
         System.out.println("SUCCESS: got bid response id: " + bidService.bid(request).getId());
-//        }
-
-//        System.out.println(">>>>> Total time consumed:" + (System.currentTimeMillis() - start));
 
         try {
             bidService.throwNPE();
