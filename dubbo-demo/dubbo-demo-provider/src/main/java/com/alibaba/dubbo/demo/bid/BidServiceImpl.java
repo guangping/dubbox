@@ -15,12 +15,18 @@
  */
 package com.alibaba.dubbo.demo.bid;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class BidServiceImpl implements BidService {
 
+    private static final Logger logger= LogManager.getLogger(BidServiceImpl.class);
+
     public BidResponse bid(BidRequest request) {
+        logger.info("bid start ......");
         BidResponse response = new BidResponse();
 
         response.setId("abc");

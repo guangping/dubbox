@@ -41,9 +41,16 @@ public class DemoConsumerTest extends AbstractTestNGSpringContextTests {
     }
 
     @Test
+    public void bidSingle() {
+        BidRequest request = new BidRequest();
+        BidResponse response = this.bidService.bid(request);
+        logger.info(JSONObject.toJSONString(response));
+    }
+
+    @Test(threadPoolSize = 10,invocationCount = 1000)
     public void bid() {
         BidRequest request = new BidRequest();
         BidResponse response = this.bidService.bid(request);
-        System.out.println(JSONObject.toJSONString(response));
+        logger.info(JSONObject.toJSONString(response));
     }
 }
