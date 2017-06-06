@@ -49,13 +49,15 @@ public class NettyServer extends AbstractServer implements Server {
 
     private static final Logger logger = LoggerFactory.getLogger(NettyServer.class);
 
-    private Map<String, Channel>  channels; // <ip:port, channel>
+    private Map<String, Channel> channels; // <ip:port, channel>
 
     private io.netty.channel.Channel channel;
 
     private EventLoopGroup bossGroup;
 
     private EventLoopGroup workerGroup;
+
+    protected static final int BIZGROUPSIZE = Runtime.getRuntime().availableProcessors()*2;	//默认
 
     public NettyServer(URL url, ChannelHandler handler) throws RemotingException {
         super(url, ChannelHandlers.wrap(handler, ExecutorUtil.setThreadName(url, SERVER_THREAD_POOL_NAME)));
@@ -69,29 +71,28 @@ public class NettyServer extends AbstractServer implements Server {
         final NettyHandler nettyHandler = new NettyHandler(getUrl(), this);
         channels = nettyHandler.getChannels();
 
-        bossGroup = new NioEventLoopGroup(1, (new NamedThreadFactory("NettyServerBoss", true)));
-        workerGroup = new NioEventLoopGroup(getUrl().getPositiveParameter(Constants.IO_THREADS_KEY, Constants.DEFAULT_IO_THREADS), new NamedThreadFactory("NettyServerWorker", true));
+        bossGroup = new NioEventLoopGroup(BIZGROUPSIZE, (new NamedThreadFactory("NettyServerBoss", true)));
+        int workerThreadCount= getUrl().getPositiveParameter(Constants.IO_THREADS_KEY, Constants.DEFAULT_IO_THREADS);
+        workerGroup = new NioEventLoopGroup(workerThreadCount, new NamedThreadFactory("NettyServerWorker", true));
 
         bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class);
-        bootstrap.childOption(ChannelOption.TCP_NODELAY, false);
-        bootstrap.childHandler(new ChannelInitializer() {
-
-            public void initChannel(io.netty.channel.Channel ch) {
-                NettyCodecAdapter adapter = new NettyCodecAdapter(getCodec(), getUrl(), NettyServer.this);
-                ChannelPipeline channelPipeline = ch.pipeline();
-                channelPipeline.addLast("decoder", adapter.getDecoder());
-                channelPipeline.addLast("encoder", adapter.getEncoder());
-                channelPipeline.addLast("handler", nettyHandler);
-            }
-        });
-
-
+        bootstrap.option(ChannelOption.TCP_NODELAY, false)
+                .option(ChannelOption.SO_BACKLOG, 1024)
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .childHandler(new ChannelInitializer() {
+                    public void initChannel(io.netty.channel.Channel ch) {
+                        NettyCodecAdapter adapter = new NettyCodecAdapter(getCodec(), getUrl(), NettyServer.this);
+                        ChannelPipeline channelPipeline = ch.pipeline();
+                        channelPipeline.addLast("decoder", adapter.getDecoder());
+                        channelPipeline.addLast("encoder", adapter.getEncoder());
+                        channelPipeline.addLast("handler", nettyHandler);
+                    }
+                });
         // bind
-        ChannelFuture channelFuture = bootstrap.bind(getBindAddress());
+        ChannelFuture channelFuture = bootstrap.bind(getBindAddress()).sync();
 
-        channelFuture.awaitUninterruptibly();
+       // channelFuture.awaitUninterruptibly();
         channel = channelFuture.channel();
-
     }
 
     @Override
@@ -99,7 +100,7 @@ public class NettyServer extends AbstractServer implements Server {
         try {
             if (channel != null) {
                 // unbind.
-                channel.close().syncUninterruptibly();
+                channel.close();//.syncUninterruptibly();
             }
         } catch (Throwable e) {
             logger.warn(e.getMessage(), e);

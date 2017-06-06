@@ -32,8 +32,7 @@
 
     <dubbo:protocol name="dubbo" serialization="kryo" server="netty4" client="netty4" optimizer="com.alibaba.dubbo.demo.SerializationOptimizerImpl"/>
 
-
-	<dubbo:service interface="com.alibaba.dubbo.demo.bid.BidService" ref="bidService"/>
+	<dubbo:service  interface="com.alibaba.dubbo.demo.bid.BidService" ref="bidService"/>
 
     <!-- we add the group property since there's another annotation-configured service impl: com.alibaba.dubbo.demo.user.facade.AnnotationDrivenUserRestServiceImpl -->
     <dubbo:service interface="com.alibaba.dubbo.demo.user.UserService" ref="userService" group="xmlConfig"/>

@@ -29,10 +29,10 @@ public class DemoConsumerTest extends AbstractTestNGSpringContextTests {
     @Autowired
     private BidService bidService;
 
-    @BeforeMethod
+/*    @BeforeMethod
     public void before() {
         logger.info("consumer start ......");
-    }
+    }*/
 
 
     @Test
@@ -47,7 +47,7 @@ public class DemoConsumerTest extends AbstractTestNGSpringContextTests {
         logger.info(JSONObject.toJSONString(response));
     }
 
-    @Test(threadPoolSize = 10,invocationCount = 1000)
+    @Test(threadPoolSize = 3,invocationCount = 100)
     public void bid() {
         BidRequest request = new BidRequest();
         BidResponse response = this.bidService.bid(request);
