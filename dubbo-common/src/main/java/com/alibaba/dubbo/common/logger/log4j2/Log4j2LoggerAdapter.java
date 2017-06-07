@@ -9,7 +9,6 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.FileAppender;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Map;
@@ -36,11 +35,11 @@ public class Log4j2LoggerAdapter implements LoggerAdapter {
     }
 
     public Logger getLogger(String key) {
-        return new Log4j2Logger(LoggerFactory.getLogger(key));
+        return new Log4j2Logger(LogManager.getLogger(key));
     }
 
     public Logger getLogger(Class<?> key) {
-        return new Log4j2Logger(LoggerFactory.getLogger(key));
+        return new Log4j2Logger(LogManager.getLogger(key));
     }
 
     private File file;

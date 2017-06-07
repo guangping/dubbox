@@ -3,17 +3,14 @@ package com.alibaba.dubbo.common.logger.log4j2;
 
 import com.alibaba.dubbo.common.logger.Logger;
 
-/**
- * author: yangjunming (http://yjmyzz.cnblogs.com/)
- * since: 2016-02-24
- */
+
 public class Log4j2Logger implements Logger {
 
     //private static final String FQCN = FailsafeLogger.class.getName();
 
-    private final org.slf4j.Logger logger;
+    private final  org.apache.logging.log4j.Logger logger;
 
-    public Log4j2Logger(org.slf4j.Logger logger) {
+    public Log4j2Logger(org.apache.logging.log4j.Logger logger) {
         this.logger = logger;
     }
 
